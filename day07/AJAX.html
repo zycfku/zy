@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./form.css">
+    <title>Document</title>
+</head>
+<body>
+    <form action="./register.php" method="post">     
+        <span id="msg">aaa</span>  
+        用户名：<input type="text" name="username" id="username">
+        <div id='check'></div>
+        昵称：<input type="text" name="nickname" >
+        密码： <input type="password" name="password" >   
+        <input type="submit" value="注册">
+    </form>
+    <div class="showmsg"></div>
+    <script>
+           document.querySelector('#username').onblur = function() {
+               var username = this.value;
+               var xhr = new XMLHttpRequest();
+               xhr.open('get', 'ajax.php?username='+username);
+               xhr.send(null);
+               xhr.onreadystatechange = function() {
+              if(xhr.status == 200 && xhr.readyState == 4) {
+                  document.querySelector('#check').innerHTML = xhr.responseText;
+              }
+           }
+           }
+          
+
+
+
+        // document.querySelector("#username").onblur = function(){
+        //     // 1.获取用户数据
+        //     var name = this.value;
+
+        //     // 2，让异步对象发送请求
+        //     // 2.1 创建异步对象
+        //     var xhr = new XMLHttpRequest();
+        //     // 2.2 设置 请求行 open(请求方式，请求url):
+        //         // get请求如果有参数就需要在url后面拼接参数，
+        //         // post如果有参数，就在请求体中传递
+        //     xhr.open("get","validate.php?username="+name);
+        //     // 2.3 设置 请求头 setRequestHeader('key':'value')
+        //         // get方式不需要设置请求头
+        //         // post需要设置 Content-Type:application/x-www-form-urlencoded
+        //     // 2.4 设置 请求体:发送请求  send(参数：key=value&key=value)
+        //         // 如果有参数，post应该在这个位置来传递参数
+        //         // 对于 get请求不需要在这个位置来传递参数
+        //     xhr.send(null);
+
+        //     // 响应报文：
+        //     // 报文行：响应状态码 响应状态信息  200 ok
+        //     // 报文头：服务器返回给客户端的一些额外信息  
+        //     // 报文体：服务器返回给客户端的数据 responseText:普通字符串  responseXML：符合xml格式的字符串
+        //     // xhr.status:可以获取当前服务器的响应状态  200 》成功
+        //     console.log(xhr.status);
+        //     // 一个真正成功的响应应该两个方面：1.服务器成功响应  2.数据已经回到客户端并且可以使用了
+        //     // 监听异步对象的响应状态 readystate
+        //     // 0:创建了异步对象，但是还没有真正的去发送请求
+        //     // 1.调用了send方法，正在发送请求
+        //     // 2.send方法执行完毕了，已经收到服务器的响应内容--原始内容，还不可以使用
+        //     // 3.正在解析数据
+        //     // 4.响应内容解析完毕，可以使用了
+        //     xhr.onreadystatechange = function(){
+        //         if(xhr.status == 200 && xhr.readyState == 4){
+        //             console.log(xhr.responseText);
+        //             console.log("-----------");
+        //             document.querySelector(".showmsg").innerHTML = xhr.responseText;;
+        //         }
+        //     }
+        // };
+    </script>
+</body>
+</html>

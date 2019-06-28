@@ -1,10 +1,10 @@
 <?php
 header('Content-Type:text/html;charset=utf-8');
-$link = @mysqli_connect('127.0.0.1','root','root','zyku');
+$link = @mysqli_connect('127.0.0.1', 'root', 'root', 'zyku');
 mysqli_query($link, 'set names utf8');
 $sql = 'select * from hero';
-$res= mysqli_query($link,$sql);
-$data = mysqli_fetch_all($res,1);
+$res = mysqli_query($link, $sql);
+$data = mysqli_fetch_all($res, 1);
 
 ?>
 <!DOCTYPE html>
@@ -70,8 +70,7 @@ $data = mysqli_fetch_all($res,1);
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-          aria-expanded="false">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -94,9 +93,9 @@ $data = mysqli_fetch_all($res,1);
         </ul>
         <form class="navbar-form navbar-left" style="margin:0" role="search">
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
+            <input type="text" class="form-control sous" placeholder="Search">
           </div>
-          <button type="submit" class="btn btn-default">搜索</button>
+          <button type="button" class="btn btn-default search">搜索</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
           <li>
@@ -121,34 +120,63 @@ $data = mysqli_fetch_all($res,1);
         </tr>
       </thead>
       <tbody>
-        <?php foreach($data as $k=> $v) { ?>
-        <tr>
-          <td><?php echo ++$k ?></td>
-          <td><?php echo $v['heroName'] ?></td>
-          <td>
-            <img src="<?php echo $v['heroIcon'] ?>" alt="">
-          </td>
-          <td><?php echo $v['heroSkill'] ?></td>
-          <td>
-            <a href="update.html?id=<?php echo $v['id'] ?>" class="btn btn-md btn-info">编辑</a>
-            <a href="del.php?id=<?php echo $v['id'] ?>" class="btn btn-md btn-danger del">删除</a>
-          </td>
-        </tr>
+        <?php foreach ($data as $k => $v) { ?>
+          <tr>
+            <td><?php echo ++$k ?></td>
+            <td><?php echo $v['heroName'] ?></td>
+            <td>
+              <img src="<?php echo $v['heroIcon'] ?>" alt="">
+            </td>
+            <td><?php echo $v['heroSkill'] ?></td>
+            <td>
+              <a href="update.php?id=<?php echo $v['id'] ?>" class="btn btn-md btn-info">编辑</a>
+              <a href="del.php?id=<?php echo $v['id'] ?>" class="btn btn-md btn-danger del">删除</a>
+            </td>
+          </tr>
         <?php } ?>
       </tbody>
     </table>
   </div>
 
   <script>
-   var del =document.querySelectorAll('.del');
-   del.onclick = function() {
-     let delflag = window.confirm('确定删除此列吗?');
-     if(!delflag) {
-       return false;
-     } 
-   }
+    var del = document.querySelectorAll('.del');
+    del.onclick = function() {
+      let delflag = window.confirm('确定删除此列吗?');
+      if (!delflag) {
+        return false;
+      }
+    }
+    var sea = document.querySelector('.search');
+    var sous = document.querySelector('.sous');
+    sous.onkeyup = function() {
+          sea.onclick();
+    }
 
-     </script>
+    sea.onclick = function() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('get','search.php?name='+sous.value);
+      xhr.send(null);
+      xhr.onreadystatechange = function() {
+        if(xhr.status == 200 && xhr.readyState == 4) {
+            var res = xhr.responseText;
+            var arr = JSON.parse(res);                       
+            var html='';
+            arr.forEach(function(item){
+              html += '<tr><td>'+item['id']+'</td><td>'+item['heroName']+'</td><td>';
+            html += '<img src=" '+item['heroIcon']+' " alt=""></td>';
+            html += '<td>'+item['heroSkill']+'</td>';
+            html += '<td><a href="update.php?id= class="btn btn-md btn-info">编辑</a><a href="del.php?id=" class="btn btn-md btn-danger del">删除</a></td></tr>';
+            })
+
+            var tbody = document.querySelector('tbody');
+           tbody.innerHTML = html;
+        }
+
+      }
+
+
+    }
+  </script>
 </body>
 
 </html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <select name="" id="selProvince">
+        <option value="">----请选择----</option>
+    </select>
+    <select name="" id="selCity">
+        <option value="">----请选择----</option>
+    </select>
+    <select name="" id="selCountry">
+        <option value="">----请选择----</option>
+    </select>
+
+    <script>
+        // 先请求 api/getProvince.php 
+        $.ajax({
+            type: 'post',
+            url: "getProvince.php",
+            dataType: 'json',
+            success: function (res) {
+                // 从这个文件中得到数据以后 将其渲染到 id为selProvince的文件中 
+                var str = ""
+                res.forEach(function (item, index) {
+                    str += "<option value='" + item.code + "'>" + item.name + "</option>"
+                });
+                $("#selProvince").append(str);
+            }
+        });
+        // 给 id= selProvince 注册 change事件  
+        $("#selProvince").on("change", function () {
+            // 获取其value属性值  code 就是城市表里面对应的省份ID 
+            var code = $(this).val();
+            // 发送ajax 
+            $.ajax({
+                type: 'post',
+                url: "getCity.php",
+                data: { code: code },
+                dataType: 'json',
+                success: function (res) {
+                    // 得到数据以后 将数据渲染到id=selCity这个select中 
+                    $("#selCity").html("");
+                    var str = "<option >----请选择----</option>";
+                    res.forEach(function (item, index) {
+                        str += "<option value='" + item.code + "'>" + item.name + "</option>"
+                    });
+                    $("#selCity").append(str);
+                }
+
+            });
+        });
+
+          // 给 id= selCity 注册 change事件  
+        $("#selCity").on("change", function () {
+             // 获取其value属性值  code 就是区表里面对应的城市ID 
+            var code = $(this).val();
+              // 发送ajax 
+            $.ajax({
+                type: 'post',
+                url: "getTown.php",
+                data: { code: code },
+                dataType: 'json',
+                success: function (res) {
+                    // 得到数据以后 将数据渲染到id=selCountry这个select中 
+                    $("#selCountry").html("");
+                    var str = "<option >----请选择----</option>" 
+                    res.forEach(function (item, index) {
+                        str += "<option value='" + item.code + "'>" + item.name + "</option>"
+                    });
+                    $("#selCountry").append(str);
+                   console.log(res);
+                   
+                    
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- <link rel="stylesheet" href="./css/index.css"> -->
+</head>
+<body>
+    <h2>京东商城</h2>
+<ul>
+   
+</ul>
+<!-- 我们一般会将模板内容创建script标签中  在渲染数据时 不需要再去对字符串进行拼接
+1.我们需要有一个模板 这个模板就是用于我们来渲染数据使用  业内都是将模板放在script标签中 
+2.为了防止浏览器 把模板使用的script标签当作为js来解析 手动给它添加一个type属性只要这个属性的值不是text/javascript 
+3.要给模板的script标签设置一个id属性 
+-->
+<!-- <script type="text/template" id="template">
+     <li>
+        <a href="#">
+            <img src="<%=src%>" alt="">
+            <p><%=text%></p>
+        </a>
+    </li>
+</script> -->
+
+<script>
+    // 数据
+    var obj = {
+        "src":"./images/nav_3.png" ,
+        "text":"京东市场"
+     }
+     
+    //  // 获取script标签 
+    //  var template = document.querySelector('#template');
+    //  var str = template.innerHTML; 
+    //  console.log(str);
+    //  // 定义正则提取对应的内容 
+    //  var reg = /<%=(\w+)%>/g;
+
+    //  var arr = [];
+
+    //  while(arr = reg.exec(str)){
+    //      str = str.replace(arr[0],obj[arr[1]])
+    //  }
+
+    //  document.querySelector('ul').innerHTML = str;
+      
+
+    
+</script>
+<script type="text/template">
+ <li>
+        <a href="#">
+            <img src=<%=src%> alt="">
+            <p><%=text%></p>
+        </a>
+    </li>
+
+</script>
+</body>
+</html>

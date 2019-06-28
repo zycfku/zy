@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="zh-cn">
 
@@ -88,12 +86,12 @@
   <div class="container">
 
     <div class="jumbotron">
-      <form action="update.php" method="POST" enctype="multipart/form-data">
+      <form>
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1">
             <span class='glyphicon glyphicon-cutlery'></span>
           </span>
-          <input type="text" name='heroName' class="form-control" placeholder="" aria-describedby="basic-addon1" required>
+          <input type="text" name='heroName' class="form-control" placeholder="请输入人员姓名" aria-describedby="basic-addon1" required>
         </div>
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon2">
@@ -110,7 +108,7 @@
 
         <div class="form-group">
           <button type="submit" class="btn btn-primary">保存</button>
-          <a href='index.php' class="btn btn-danger">取消</a>
+          <a href='#' class="btn btn-danger">取消</a>
         </div>
       </form>
     </div>
@@ -130,8 +128,4 @@
       }
     })
   })
-
 </script>
-
-
-

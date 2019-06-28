@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <h2>京东商城</h2>
+<ul>
+    <li>
+        <a href="#">
+            <img src="./images/nav_1.png" alt="">
+            <p>京东超市</p>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <img src="./images/nav_2.png" alt="">
+            <p>全球购物</p>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <img src="./images/nav_3.png" alt="">
+            <p>京东市场</p>
+        </a>
+    </li>
+</ul>
+<script>
+ var xhr = new XMLHttpRequest();
+   xhr.open('get','nav.json');
+   xhr.send(null);
+   xhr.onreadystatechange=function() {
+       if(xhr.status==200 && xhr.readyState == 4) {
+           var res = xhr.responseText;
+           var arr = JSON.parse(res);
+           console.log(arr);
+           
+           var html = '';
+           forEach((element)=>{
+             html += '<li><a href="#"><img src=" '+ element.src+' " alt=""><p>'+element.text +'</p></a></li>';
+           });
+          document.querySelector('ul').innerHTML = html;
+
+       }
+   }
+
+</script>
+</body>
+</html>

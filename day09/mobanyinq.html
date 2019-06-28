@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      var str = '张三：2500，李四：3000，王五：50000，赵六：1800';
+      var reg = /[\u4e00-\u9fa5]{2,}：(\d+)/g;
+      var arr = [];
+      while(arr = reg.exec(str)){
+          console.log(arr[0],arr[1]);
+          
+      }
+    
+    </script>
+</body>
+</html>
