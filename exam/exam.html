@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>评论动态加载</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</head>
+
+<body>
+    <div style="height:300px;"></div>
+    <div id="container">
+        <ul id="contentList">
+            <!-- <li class="comment">
+        <div class="left"><img src="./g1.jpg"></div>
+        <div class="right">
+            <div><span>传智雷老师</span>: <span>昨天 19:08:33</span> </div>
+            <div>上述知情人士透露，目前业内一些公司准备了专门的名单从电信运营商定向挖人，其筹码是数倍于运营商的薪酬、股权激励以及企业运营决策的自主权。</div>
+        </div>
+    </li>
+    <hr>
+    <li class="comment">
+        <div class="left"><img src="./g1.jpg"></div>
+        <div class="right">
+            <div><span>传智喵喵喵</span>: <span>昨天 19:08:33</span> </div>
+            <div>上述知情人士透露，目前业内一些公司准备了专门的名单从电信运营商定向挖人，其筹码是数倍于运营商的薪酬、股权激励以及企业运营决策的自主权。</div>
+        </div>
+    </li> -->
+            <!-- <hr> -->
+        </ul>
+        <div id="more">加载更多...</div>
+        <input type="hidden" id="last" value="0">
+    </div>
+    <script type="text/template" id="temp">
+    {{each list as v k}}
+    <li class="comment">
+        <div class="left"><img src={{v.userinfo.head}}></div>
+        <div class="right">
+            <div><span>{{v.userinfo}}</span>: <span>{{v.timeDifference}}</span> </div>
+            <div>{{v.content}}</div>
+        </div>
+    </li>
+    <hr>
+    {{/each}}
+</script>
+    <script src="template.js"></script>
+    <script>
+
+        function mainComment(res) {
+            console.log(res);
+
+        }
+        render();
+        function render(reqnum) {
+            $.ajax({
+                type: 'get',
+                url: 'http://coral.qq.com/article/1983169624/comment',
+                data: {
+                    commentid: '6280346786642608295',
+                    tag: '',
+                    reqnum: reqnum || 20,
+                    retnum: 5
+                },
+                jsonpCallback: 'mainComment',
+                dataType: 'jsonp',
+                success: function (res) {
+                    var html = template('temp', { list: res.data.commentid });
+
+                    $('#contentList').html(html);
+
+                }
+            });
+        }
+        var reqnum = 20;
+        var div = document.querySelector('#more');
+        var cheng = 5;
+        div.onclick = function () {
+            render(reqnum + cheng);
+            cheng = cheng +5;
+
+        }
+    </script>
+</body>
+
+</html>

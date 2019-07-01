@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+    <link href="../lib/css/bootstrap.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: '微软雅黑';
+        }
+
+        thead {
+            background-color: #f5f5f5;
+            /*font-weight: 700;*/
+        }
+
+        th {
+            text-align: center;
+        }
+
+        .pagination {
+            margin: 0;
+        }
+
+        .control:hover {
+            background: transparent !important;
+            /*cursor: not-allowed;  */
+        }
+
+        tbody td {
+            text-align: center;
+        }
+
+        .panel {
+            position: relative;
+        }
+
+        .panel::before {
+            content: '';
+            width: 100%;
+            height: 100%;
+            background: url('../images/loading.gif')no-repeat center, rgba(88, 101, 181, 0.8);
+            position: absolute;
+            z-index: 10;
+            display: none;
+        }
+
+        .panel.cover::before {
+            display: block;
+        }
+
+        /* a标签的禁用样式 */
+        a.disabled {
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>后台管理系统 <small>--讲师管理</small></h1>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">讲师列表</div>
+            <div class="panel-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>姓名</th>
+                            <th>年龄</th>
+                            <th>昵称</th>
+                            <th>学校</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr>
+                            <td>内容</td>
+                            <td>内容</td>
+                            <td>内容</td>
+                            <td>内容</td>
+                            <td>内容</td>
+                            <td><a href="javascript:;" data-id="1" class="delete" title="删除"><span class="glyphicon glyphicon-remove"></span></a></td>
+                        </tr> -->
+                    </tbody>
+                </table>
+                <div>
+                    <nav aria-label="Page navigation">
+                        <button class="btn btn-default" data-toggle="modal" data-target="#addModal">新增</button>
+                        <ul class="pagination pull-right">
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 新增弹出框 -->
+    <div id='addModal' class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">新增窗口</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="newUser">
+                        <div class="form-group">
+                            <label for="inputUserName">用户名</label>
+                            <input name='username' type="text" class="form-control" id="inputUserName"
+                                placeholder="请输入用户名">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputUserPass">密码</label>
+                            <input name='password' type="password" class="form-control" id="inputUserPass"
+                                placeholder="请输入密码">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">真实姓名</label>
+                            <input name='name' type="text" class="form-control" id="inputName" placeholder="请输入真实姓名">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSchool">学校</label>
+                            <input name='school' type="text" class="form-control" id="inputSchool" placeholder="请输入学校">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAge">年龄</label>
+                            <input name='age' type="text" class="form-control" id="inputAge" placeholder="请输入年龄">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="save" class="btn btn-primary" data-dismiss="modal">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/template" id="userTemp">
+        {{ each list as value index}}
+        <tr>
+                <td>{{(pageNum-1)*pageSize + index+1}}</td>
+                <td>{{value.username}}</td>
+                <td>{{value.age}}</td>
+                <td>{{value.name}}</td>
+                <td>{{value.school}}</td>
+                <td><a href="javascript:;" data-id="{{value.id}}" class="delete" title="删除"><span class="glyphicon glyphicon-remove"></span></a></td>
+            </tr>
+        {{/each}}
+    </script>
+    <script type="text/template" id="pageTemp">
+
+        <li >
+                <a href="#" class="prev {{pageNum  == 1 ? 'disabled' : ''}}"   aria-label="Previous" data-page="{{pageNum-1 == 0 ? 1 : pageNum-1}}">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li><a href="#">{{pageNum}}</a></li>
+              <li><a href="#">/</a></li>
+              <li><a href="#">{{pageTotal==0 ? 1 : pageTotal}}</a></li>
+              <li >
+                <a class="next {{ pageNum == pageTotal ? 'disabled' : ''}}" href="#" aria-label="Next" data-page="{{pageNum+1}}">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+    
+    </script>
+
+    <script src="../lib/js/jquery-1.12.4.js"></script>
+    <script src="../lib/js/bootstrap.min.js"></script>
+    <!--引入模板引擎js文件-->
+    <script src="../lib/js/template.js"></script>
+    <script>
+        // 首页的内容显示
+        // react.js  vue.js  
+        // 函数行参的默认值
+        // var current = null;
+        // window.current = null; 
+        function render(currentPage, pageSize) {
+            $.ajax({
+                type: 'get',
+                url: 'findUsers.php',
+                data: {
+                    pageNum: currentPage || 1, // 当前第几页
+                    pageSize: pageSize || 1  // 每一页显示几条数据
+                },
+                success: function (data) {
+                    console.log(data);
+                    var str = template('userTemp', data);
+                    $("tbody").html(str);
+
+                    var pageTotal = Math.ceil(data.total / data.pageSize);
+
+                    var page = template("pageTemp", {
+                        pageNum: data.pageNum,
+                        pageTotal: pageTotal
+
+                    });
+
+                    $(".pagination").html(page);
+
+                    // 保存当前页
+                    window.current = data.pageNum;
+
+                }
+            });
+        }
+
+
+        render();
+
+        // console.log(current);
+
+
+
+        // 给a标签注册点击事件
+        $("ul").on('click', 'a', function () {
+            // 先要实现判断a标签中有没有class属性为disabled 如果有 下面的代码就不再往下执行
+            if ($(this).hasClass("disabled")) {
+                return;
+            }
+
+            // 只想给拥有prev和next这两个类名的a标签执行下面的代码
+            if ($(this).hasClass("prev") || $(this).hasClass("next")) {
+                // 获取自定义的属性 data-page的值 它的值就表示即将要显示的下一页
+                var page = $(this).attr('data-page');
+
+                render(page);
+
+            }
+        });
+
+        // 删除操作
+        $('tbody').on("click", '.delete', function () {
+            // 获取data-id这个自定义属性的值 
+            var id = $(this).attr("data-id");
+
+            // 发送ajax 
+            $.ajax({
+                type: 'post',
+                url: 'removeUser.php',
+                data: { id: id },
+                dataType: 'json',
+                success: function (data) {
+                  
+                    if(data.status == 'ok'){
+                        // 如果当前页上面只有一条数据了 应该跳转到上一页
+                        if($('tbody').children().length == 1){
+                            // 如果本身已经是第一页
+                            if(current == 1){
+                                render(current);
+                            }else{
+                                render(current-1);
+                            }
+                            
+                        }else{
+                            render(current);
+                        }    
+
+                       
+                    }
+                    
+                }
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>
