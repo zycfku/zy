@@ -187,6 +187,7 @@
         </li>
 </script>
 <script>
+    function render(cpage,pageSize){
  $.ajax({
      type: 'get',
      url: 'findUsers.php',
@@ -199,9 +200,64 @@
          console.log(res);
          var html = template('indexData', res);
          $('tbody').html(html);
-         
+        var pageHtml = template("indexData",{"pageNum":result.pageNum,"totalPage":Math.ceil(result.total/result.pageSize)});
+        $('.pagination').html(pageHtml);
+        window.pageNum = result.pageNum;
      }
  });
+    };
+    render();
+    $('.pagination').on('click','a',function(){
+        if($(this).hasClass('disabled')) {
+            return;
+        }
+        if($(this).hasClass('prev')||$(this).hasClass('next')){
+            var currentPage = $(this).attr('data-page');
+            render(currentPage);
+        }
+    })
+    $('#save').on('click',function() {
+        $ajax({
+            type: 'post',
+            url: 'saveUser.php',
+            data: $('#newUser').serialize(),
+            dataType: 'json',
+            beforeSend: function() {},
+            success: function(res) {
+                console.log(res);
+                if(res.status == 'ok') {
+                    alert('新增成功')；
+                    render();
+                }
+            }
+        })
+    });
+
+$('tbody').on('click','.delete',function(){
+    if(window.confirm('请问是否真的需要删除？')){
+        var id= $(this).attr('data-id');
+        $.ajax({
+            type: 'post',
+            url: 'removeUser.php',
+            data:{'id':id},
+            dataType: 'json',
+            success: function(res) {
+              if(res.status == 'ok') {
+                  alert('删除成功');
+                  if($('tbody').children().length == 1){
+                      if(window.pageNum == 1) {
+                          render(window.pageNum);
+                      }else{
+                          render(window.pageNum -1);
+                      }
+                  }
+                  render(window.pageNum);
+              }
+            }
+        });
+    }
+});
+
 
 </script>
 
