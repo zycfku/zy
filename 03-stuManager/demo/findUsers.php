@@ -9,11 +9,7 @@
     当前用户名: root
     当前密码: root
     */
-    $con = mysqli_connect("localhost","root","root","web31");
-
-    if (!$con){
-        die('Could not connect: ' . mysqli_error());
-    }
+    $con = mysqli_connect("localhost","root","root","zyku");
 
     // mysqli_select_db("test", $con);
 
@@ -24,34 +20,51 @@
 
     $sql="select *,(select count(*) from teacher) as total from teacher order by id desc limit $start , $pageSize ";
 
-    $result = mysqli_query($sql);
+    $result = mysqli_query($con,$sql);
 
-    $list = array();
+    // $list = array();
     $total = 0;
 
-    while($row = mysqli_fetch_array($result)){
-        $item = array(
-        'id' => $row['id'],
-        'username' => $row['username'],
-        'password' => $row['password'],
-        'name' => $row['name'],
-        'school' => $row['school'],
-        'age' => intval($row['age']),
-        );
-        array_push($list,$item);
-        $total = $row['total'];
-    }
+    // while($row = mysqli_fetch_array($result)){
+    //     $item = array(
+    //     'id' => $row['id'],
+    //     'username' => $row['username'],
+    //     'password' => $row['password'],
+    //     'name' => $row['name'],
+    //     'school' => $row['school'],
+    //     'age' => intval($row['age']),
+    //     );
+    //     array_push($list,$item);
+    //     $total = $row['total'];
+    // }
 
-    echo json_encode(
-    array(
-    'list'=>$list,
-    'pageSize'=>intval($pageSize),
-    'pageNum'=>intval($pageNum),
-    'total'=> intval($total)
-    )
-    );
+    // echo json_encode(
+    // array(
+    // 'list'=>$list,
+    // 'pageSize'=>intval($pageSize),
+    // 'pageNum'=>intval($pageNum),
+    // 'total'=> intval($total)
+    // )
+    // );
 
     mysqli_close($con);
 
     // sleep(1);
-?>
+$data = mysqli_fetch_all($result,1);
+
+
+$arr = array(
+    'code'=>400,
+    'msg'=>'错误',
+);
+if($result) {
+    $arr = array(
+    'code'=>200,
+    'msg'=>'成功',
+    'data'=>$data,
+    'pageSize'=>intval($pageSize),
+     'pageNum'=>intval($pageNum),
+     'total'=> intval($data[0]['total'])
+    );
+    echo json_encode($arr);
+}

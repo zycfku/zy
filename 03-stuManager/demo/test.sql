@@ -1,16 +1,16 @@
-﻿/*
+/*
 Navicat MySQL Data Transfer
 
-Source Server         : itcast
+Source Server         : 本机
 Source Server Version : 50553
 Source Host           : localhost:3306
-Source Database       : test
+Source Database       : web28
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-08-31 17:02:27
+Date: 2019-03-30 15:25:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;

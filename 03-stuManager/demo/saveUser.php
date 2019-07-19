@@ -7,22 +7,22 @@
     当前用户名: root
     当前密码: root
     */
-    $con = mysql_connect("localhost","root","root");
+    $con = mysqli_connect("localhost","root","root","zyku");
 
     if (!$con){
-        die('Could not connect: ' . mysql_error());
+        die('Could not connect: ' . mysqli_error());
     }
-    mysql_select_db("test", $con);
+
 
     $sql="INSERT INTO teacher (username, password, name,school,age)
     VALUES
     ('$_POST[username]','$_POST[password]','$_POST[name]','$_POST[school]','$_POST[age]')";
 
-    if (!mysql_query($sql,$con)){
-      die('Error: ' . mysql_error());
+    if (!mysqli_query($con,$sql)){
+      die('Error: ' . mysqli_error());
     }
 
     echo '{"status":"ok"}';
 
-    mysql_close($con)
+    mysqli_close($con)
 ?>

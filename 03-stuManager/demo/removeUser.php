@@ -8,20 +8,24 @@
     当前用户名: root
     当前密码: root
     */
-    $con = mysql_connect("localhost","root","root");
+    $con = mysqli_connect("localhost","root","root",'zyku');
 
     if (!$con){
-        die('Could not connect: ' . mysql_error());
+        die('Could not connect: ' . mysqli_error());
     }
 
-    mysql_select_db("test", $con);
+   
 
     $sql = "DELETE FROM teacher WHERE id = $_POST[id]";
 
-    mysql_query($sql,$con);
+    $res = mysqli_query($con,$sql);
+    $str = '{"status":"0"}';
+    if($res){
+        $str =  '{"status":"ok"}';
+    }
+    
+    echo $str;
 
-    echo '{"status":"ok"}';
-
-    mysql_close($con);
+    mysqli_close($con);
 
 ?>

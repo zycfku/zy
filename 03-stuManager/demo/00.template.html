@@ -177,7 +177,7 @@
             success:function(result){
                 console.log(result);
                 // 渲染数据列表
-                var html = template("stuListTemp",result);
+                var html = template("stuListTemp",{list:result.data,"pageNum":result.pageNum,"pageSize":result.pageSize});
                 $("tbody").html(html);
 
                 // 渲染分页结构块
@@ -186,6 +186,8 @@
 
                 // 将当前页码存储在全局的变量中，供其它事件来使用
                 window.pageNum = result.pageNum;
+                console.log(result.data);
+                
             }
             });
         }
